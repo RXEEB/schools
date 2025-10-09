@@ -1,0 +1,68 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import { regionsApi } from '@/api/regionsApi'
+import { districtsApi } from '@/api/districtsApi'
+
+import TopContent from '../TopContent.vue'
+import Filter from '../Filter.vue'
+import Calendar from '../Calendar.vue'
+import Table from '../Table.vue'
+
+const regions = ref([])
+const districts = ref([])
+const loadingRegions = ref(false)
+const loadingDistricts = ref(false)
+
+const fetchRegions = async () => {
+  loadingRegions.value = true
+
+  try {
+    regions.value = await regionsApi.getRegions()
+  } catch (err) {
+    alert('Ошибка: запроса регионов', err)
+  } finally {
+    loadingRegions.value = false
+  }
+}
+
+const fetchDistricts = async () => {
+  loadingDistricts.value = true
+
+  try {
+    districts.value = await districtsApi.getDistricts()
+  } catch (err) {
+    alert('Ошибка: запроса округов ', err)
+  } finally {
+    loadingDistricts.value = false
+  }
+}
+
+onMounted(() => {
+  fetchRegions()
+  fetchDistricts()
+})
+</script>
+
+<template>
+  <div class="container">
+    <TopContent title="Таблица учреждений" />
+    <div class="filters">
+      <Calendar title="09 января 2024 - 15 января 2024" />
+      <Filter title="Сортировка по регионам" :regions="regions" :loading="loadingRegions" />
+      <Filter
+        title="Сортировка по федеральным округам"
+        :districts="districts"
+        :loading="loadingDistricts"
+      />
+    </div>
+    <Table />
+  </div>
+</template>
+<style scoped>
+.filters {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 auto;
+  gap: 2rem;
+}
+</style>
