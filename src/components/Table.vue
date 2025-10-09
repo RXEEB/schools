@@ -1,5 +1,8 @@
 <script setup>
 import SchoolsList from './SchoolsList.vue'
+import { useSchoolsStore } from '@/stores/schools'
+
+const schoolsStore = useSchoolsStore()
 </script>
 <template>
   <div class="container">
@@ -18,7 +21,7 @@ import SchoolsList from './SchoolsList.vue'
       </div>
     </div>
     <div class="table">
-      <SchoolsList />
+      <SchoolsList :schools="schoolsStore.schools" />
     </div>
   </div>
 </template>

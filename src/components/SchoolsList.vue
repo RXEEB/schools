@@ -1,11 +1,14 @@
 <script setup>
 import School from './School.vue'
 
-const onClickAdd = () => {
-  isAdded.value = !isAdded.value
-}
+defineProps({
+  schools: {
+    type: Array,
+    required: true,
+  },
+})
 </script>
 
 <template>
-  <School :onClickAdd="onClickAdd" />
+  <School v-for="school in schools" :key="school.uuid" :school="school" />
 </template>

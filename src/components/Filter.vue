@@ -25,6 +25,7 @@ const items = computed(() => {
   }
   return []
 })
+
 const isPopupVisible = ref(false)
 
 const togglePopup = () => {
@@ -35,12 +36,14 @@ const togglePopup = () => {
 <template>
   <div class="sort" @click="togglePopup">
     <span>{{ title }}</span>
-
     <img :src="!isPopupVisible ? '/img/arrow-down.svg' : '/img/arrow-up.svg'" />
 
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
-        <div @click="selectItem(item)" v-for="item in items" :key="item.id" class="popup-item">
+        <div class="status-message">
+          {{ loading ? 'Загрузка...' : items.length === 0 ? 'Нет данных' : '' }}
+        </div>
+        <div @click="togglePopup" v-for="item in items" :key="item.id" class="popup-item">
           {{ item.name }}
         </div>
       </div>
@@ -63,12 +66,6 @@ const togglePopup = () => {
   position: relative;
 }
 
-.img-search {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
 .popup {
   position: absolute;
   max-height: 482px;
@@ -86,12 +83,6 @@ const togglePopup = () => {
 
 .popup-content {
   padding: 15px;
-}
-
-.popup-content h3 {
-  margin: 0 0 10px 0;
-  font-size: 14px;
-  color: #666;
 }
 
 .popup-item {

@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, provide } from 'vue'
+import { useSchoolsStore } from '@/stores/schools'
+import { useFiltersStore } from '@/stores/filters'
 import { regionsApi } from '@/api/regionsApi'
 import { districtsApi } from '@/api/districtsApi'
 
@@ -7,6 +9,9 @@ import TopContent from '../TopContent.vue'
 import Filter from '../Filter.vue'
 import Calendar from '../Calendar.vue'
 import Table from '../Table.vue'
+
+const schoolsStore = useSchoolsStore()
+const filtersStore = useFiltersStore()
 
 const regions = ref([])
 const districts = ref([])
@@ -38,8 +43,9 @@ const fetchDistricts = async () => {
 }
 
 onMounted(() => {
-  fetchRegions()
-  fetchDistricts()
+  schoolsStore.fetchSchools()
+  filtersStore.fetchRegions()
+  filtersStore.fetchDistricts()
 })
 </script>
 
@@ -48,11 +54,15 @@ onMounted(() => {
     <TopContent title="Таблица учреждений" />
     <div class="filters">
       <Calendar title="09 января 2024 - 15 января 2024" />
-      <Filter title="Сортировка по регионам" :regions="regions" :loading="loadingRegions" />
+      <Filter
+        title="Сортировка по регионам"
+        :regions="filtersStore.regions"
+        :loading="filtersStore.loadingRegions"
+      />
       <Filter
         title="Сортировка по федеральным округам"
-        :districts="districts"
-        :loading="loadingDistricts"
+        :districts="filtersStore.districts"
+        :loading="filtersStore.loadingDistricts"
       />
     </div>
     <Table />

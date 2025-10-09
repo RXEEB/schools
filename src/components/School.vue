@@ -1,25 +1,36 @@
 <script setup>
-import { ref } from 'vue'
-defineProps({
-  content: String,
-  onClickAdd: Function,
+import { useSchoolsStore } from '@/stores/schools'
+
+const schoolsStore = useSchoolsStore()
+
+const props = defineProps({
+  school: {
+    type: Object,
+    required: true,
+  },
 })
 
-const isAdded = ref(false)
+const handleToggle = () => {
+  schoolsStore.toggleSchool(props.school.uuid)
+}
 </script>
 <template>
   <div class="tables">
     <div class="content">
-      <div @click="onClickAdd" class="add">
-        <img :src="!isAdded ? '/img/empty.svg' : '/img/added.svg'" />
-        <span>Название</span>
+      <div class="add">
+        <img
+          @click="handleToggle"
+          :src="school.isAdded ? '/img/added.svg' : '/img/empty.svg'"
+          alt="Добавить в избранное"
+        />
+        <span>{{ school.edu_org.region.name }}</span>
       </div>
     </div>
     <div class="content">
-      <span>Название</span>
+      <span>{{ school.edu_org.short_name || school.edu_org.full_name }}</span>
     </div>
     <div class="content">
-      <span>Адрес</span>
+      <span>{{ school.edu_org.contact_info.post_address }}</span>
     </div>
     <div class="content">
       <span>Уровень образования</span>
@@ -32,7 +43,7 @@ const isAdded = ref(false)
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 0.5fr;
   align-items: center;
-  height: 56px;
+  /* height: 56px; */
   border-bottom: 1px solid rgba(211, 211, 222, 1);
   opacity: 1;
 }
@@ -41,14 +52,19 @@ const isAdded = ref(false)
   padding: 9px 20px;
   min-width: 0;
   text-align: left;
+  white-space: normal;
+  overflow: hidden;
+  line-height: 1.2;
+  /* max-height: 2.4em; */
 }
 
 .content span {
   margin: 0;
   white-space: nowrap;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-overflow: ellipsis;
   text-align: left;
+  white-space: normal;
 }
 .add {
   display: flex;
