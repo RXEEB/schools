@@ -1,5 +1,6 @@
 <script setup>
 import AppButton from './ui/AppButton.vue'
+import Search from './Search.vue'
 
 defineProps({
   title: String,
@@ -12,11 +13,7 @@ defineProps({
       <h4>{{ title }}</h4>
     </div>
     <div class="right-block">
-      <div class="search-block">
-        <input class="search" type="text" placeholder="Поиск..." />
-        <img class="img-search" src="/img/search.svg" alt="icon" />
-      </div>
-
+      <Search />
       <AppButton />
     </div>
   </div>

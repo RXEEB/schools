@@ -1,7 +1,7 @@
 <script setup>
-import { useSchoolsStore } from '@/stores/schools'
+import { useSelectedSchoolsStore } from '@/stores/selectedSchools'
 
-const schoolsStore = useSchoolsStore()
+const selectedSchoolsStore = useSelectedSchoolsStore()
 
 const props = defineProps({
   school: {
@@ -11,7 +11,11 @@ const props = defineProps({
 })
 
 const handleToggle = () => {
-  schoolsStore.toggleSchool(props.school.uuid)
+  selectedSchoolsStore.toggleSchool(props.school)
+}
+
+const isSelected = () => {
+  return selectedSchoolsStore.isSchoolSelected(props.school.uuid)
 }
 </script>
 <template>
@@ -20,7 +24,7 @@ const handleToggle = () => {
       <div class="add">
         <img
           @click="handleToggle"
-          :src="school.isAdded ? '/img/added.svg' : '/img/empty.svg'"
+          :src="isSelected() ? '/img/added.svg' : '/img/empty.svg'"
           alt="Добавить в избранное"
         />
         <span>{{ school.edu_org.region.name }}</span>

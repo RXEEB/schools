@@ -18,6 +18,7 @@ apiClient.interceptors.response.use(
       console.error('404')
     } else if (error.response?.status >= 500) {
       console.error('500')
+      alert('Нет данных по этому региону, выберите другой !!!!!!!!!')
     }
 
     return Promise.reject(error)

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useSchoolsStore } from '@/stores/schools'
 
@@ -32,19 +32,26 @@ const items = computed(() => {
 })
 
 const isPopupVisible = ref(false)
+const sortRef = ref(null)
 
 const togglePopup = () => {
   isPopupVisible.value = !isPopupVisible.value
 }
 
-const handleItemClick = (item) => {
+const closePopup = () => {
+  isPopupVisible.value = false
+}
+
+const handleItemClick = item => {
   if (props.title.includes('округ')) {
     filtersStore.selectDistrict(item)
     schoolsStore.fetchSchools(item.id, null)
+    filtersStore.selectRegion(null)
   }
   if (props.title.includes('регион')) {
     filtersStore.selectRegion(item)
     schoolsStore.fetchSchools(null, item.id)
+    filtersStore.selectDistrict(null)
   }
   isPopupVisible.value = false
 }
@@ -65,24 +72,29 @@ const displayTitle = computed(() => {
   }
   return props.title
 })
+
+const handleClickOutside = event => {
+  if (sortRef.value && !sortRef.value.contains(event.target)) {
+    isPopupVisible.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <template>
-  <div class="sort" @click="togglePopup">
+  <div class="sort" @click="togglePopup" ref="sortRef">
     <span>{{ displayTitle }}</span>
     <img :src="!isPopupVisible ? '/img/arrow-down.svg' : '/img/arrow-up.svg'" />
 
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
-        <!-- Кнопка сброса для округов -->
-        <div
-          v-if="props.title.includes('округ') && filtersStore.selectedDistrict"
-          class="popup-item reset"
-          @click="handleReset"
-        >
-          ✕ Сбросить фильтр
-        </div>
-
         <div class="status-message">
           {{ loading ? 'Загрузка...' : items.length === 0 ? 'Нет данных' : '' }}
         </div>

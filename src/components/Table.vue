@@ -3,6 +3,10 @@ import SchoolsList from './SchoolsList.vue'
 import { useSchoolsStore } from '@/stores/schools'
 
 const schoolsStore = useSchoolsStore()
+
+const handlePageChange = page => {
+  console.log('Переход на страницу:', page)
+}
 </script>
 <template>
   <div class="container">
@@ -22,6 +26,7 @@ const schoolsStore = useSchoolsStore()
     </div>
     <div class="table">
       <SchoolsList :schools="schoolsStore.schools" />
+      <div class="pagination"></div>
     </div>
   </div>
 </template>
@@ -52,5 +57,8 @@ const schoolsStore = useSchoolsStore()
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
+}
+.pagination {
+  margin-top: 20px;
 }
 </style>

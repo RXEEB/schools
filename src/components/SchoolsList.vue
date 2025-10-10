@@ -10,5 +10,8 @@ defineProps({
 </script>
 
 <template>
-  <School v-for="school in schools" :key="school.uuid" :school="school" />
+  <div class="schools-list">
+    <School v-for="school in schools" :key="school.uuid" :school="school" />
+  </div>
 </template>
+<style scoped></style>
