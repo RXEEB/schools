@@ -1,5 +1,10 @@
 <script setup>
-import { ref, defineProps, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useFiltersStore } from '@/stores/filters'
+import { useSchoolsStore } from '@/stores/schools'
+
+const filtersStore = useFiltersStore()
+const schoolsStore = useSchoolsStore()
 
 const props = defineProps({
   title: String,
@@ -31,19 +36,58 @@ const isPopupVisible = ref(false)
 const togglePopup = () => {
   isPopupVisible.value = !isPopupVisible.value
 }
+
+const handleItemClick = (item) => {
+  if (props.title.includes('округ')) {
+    filtersStore.selectDistrict(item)
+    schoolsStore.fetchSchools(item.id, null)
+  }
+  if (props.title.includes('регион')) {
+    filtersStore.selectRegion(item)
+    schoolsStore.fetchSchools(null, item.id)
+  }
+  isPopupVisible.value = false
+}
+
+const handleReset = () => {
+  if (props.title.includes('округ')) {
+    filtersStore.clearDistrict()
+    schoolsStore.fetchSchools()
+  }
+  isPopupVisible.value = false
+}
+
+const displayTitle = computed(() => {
+  if (props.title.includes('регион') && filtersStore.selectedRegion) {
+    return filtersStore.selectedRegion.name
+  } else if (props.title.includes('округ') && filtersStore.selectedDistrict) {
+    return filtersStore.selectedDistrict.name
+  }
+  return props.title
+})
 </script>
 
 <template>
   <div class="sort" @click="togglePopup">
-    <span>{{ title }}</span>
+    <span>{{ displayTitle }}</span>
     <img :src="!isPopupVisible ? '/img/arrow-down.svg' : '/img/arrow-up.svg'" />
 
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
+        <!-- Кнопка сброса для округов -->
+        <div
+          v-if="props.title.includes('округ') && filtersStore.selectedDistrict"
+          class="popup-item reset"
+          @click="handleReset"
+        >
+          ✕ Сбросить фильтр
+        </div>
+
         <div class="status-message">
           {{ loading ? 'Загрузка...' : items.length === 0 ? 'Нет данных' : '' }}
         </div>
-        <div @click="togglePopup" v-for="item in items" :key="item.id" class="popup-item">
+
+        <div v-for="item in items" :key="item.id" class="popup-item" @click="handleItemClick(item)">
           {{ item.name }}
         </div>
       </div>
@@ -97,5 +141,16 @@ const togglePopup = () => {
 
 .popup-item:last-child {
   border-bottom: none;
+}
+
+.popup-item.reset {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.status-message {
+  padding: 10px;
+  text-align: center;
+  color: #666;
 }
 </style>

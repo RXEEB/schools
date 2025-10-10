@@ -6,34 +6,19 @@ export const useSchoolsStore = defineStore('schools', () => {
   const schools = ref([])
   const loading = ref(false)
 
-  const fetchSchools = async () => {
+  const fetchSchools = async (federal_district_id = null, region_id = null) => {
     loading.value = true
     try {
-      const response = await schoolsApi.getSchools()
-      schools.value = response.data.list.map((school) => ({
+      const response = await schoolsApi.getSchools(federal_district_id, region_id)
+      schools.value = response.list.map((school) => ({
         ...school,
         isAdded: false,
       }))
     } catch (error) {
-      console.error(' Ошибка загрузки школ:', error)
     } finally {
       loading.value = false
     }
   }
-
-  //   const selectAll = () => {
-  //     schools.value = schools.value.map((school) => ({
-  //       ...school,
-  //       isAdded: true,
-  //     }))
-  //   }
-
-  //   const deselectAll = () => {
-  //     schools.value = schools.value.map((school) => ({
-  //       ...school,
-  //       isAdded: false,
-  //     }))
-  //   }
 
   const toggleSchool = (schoolId) => {
     const school = schools.value.find((s) => s.uuid === schoolId)
@@ -47,7 +32,5 @@ export const useSchoolsStore = defineStore('schools', () => {
     loading,
     fetchSchools,
     toggleSchool,
-    // selectAll,
-    // deselectAll,
   }
 })

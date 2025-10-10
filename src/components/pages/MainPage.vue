@@ -1,9 +1,7 @@
 <script setup>
-import { ref, onMounted, provide } from 'vue'
+import { onMounted } from 'vue'
 import { useSchoolsStore } from '@/stores/schools'
 import { useFiltersStore } from '@/stores/filters'
-import { regionsApi } from '@/api/regionsApi'
-import { districtsApi } from '@/api/districtsApi'
 
 import TopContent from '../TopContent.vue'
 import Filter from '../Filter.vue'
@@ -12,35 +10,6 @@ import Table from '../Table.vue'
 
 const schoolsStore = useSchoolsStore()
 const filtersStore = useFiltersStore()
-
-const regions = ref([])
-const districts = ref([])
-const loadingRegions = ref(false)
-const loadingDistricts = ref(false)
-
-const fetchRegions = async () => {
-  loadingRegions.value = true
-
-  try {
-    regions.value = await regionsApi.getRegions()
-  } catch (err) {
-    alert('Ошибка: запроса регионов', err)
-  } finally {
-    loadingRegions.value = false
-  }
-}
-
-const fetchDistricts = async () => {
-  loadingDistricts.value = true
-
-  try {
-    districts.value = await districtsApi.getDistricts()
-  } catch (err) {
-    alert('Ошибка: запроса округов ', err)
-  } finally {
-    loadingDistricts.value = false
-  }
-}
 
 onMounted(() => {
   schoolsStore.fetchSchools()

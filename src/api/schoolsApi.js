@@ -1,14 +1,24 @@
 import apiClient from './axios'
 
 export const schoolsApi = {
-  async getSchools(filters = {}) {
-    const params = {}
+  async getSchools(federal_district_id = null, region_id = null) {
+    const params = {
+      count: 8,
+      page: 1,
+    }
 
-    if (filters.regionId) params.region_id = filters.regionId
-    if (filters.districtId) params.district_id = filters.districtId
-    if (filters.search) params.search = filters.search
+    if (federal_district_id) {
+      params.federal_district_id = federal_district_id
+    }
 
-    const response = await apiClient.get('/schools', { params })
-    return response
+    if (region_id) {
+      params.region_id = region_id
+    }
+    try {
+      const response = await apiClient.get('/schools', { params })
+      return response.data
+    } catch (error) {
+      throw error
+    }
   },
 }
