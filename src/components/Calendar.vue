@@ -18,7 +18,7 @@ const CURRENT_DATE = ref(formatDate())
 </script>
 <template>
   <div class="sort">
-    <span>{{ CURRENT_DATE }}</span>
+    <span>{{ CURRENT_DATE }} этот фильтр не успел сделать</span>
     <img class="img-search" src="/img/calendar.svg" alt="icon" />
   </div>
 </template>

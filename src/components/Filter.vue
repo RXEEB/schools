@@ -56,13 +56,13 @@ const handleItemClick = item => {
   isPopupVisible.value = false
 }
 
-const handleReset = () => {
-  if (props.title.includes('округ')) {
-    filtersStore.clearDistrict()
-    schoolsStore.fetchSchools()
-  }
-  isPopupVisible.value = false
-}
+// const handleReset = () => {
+//   if (props.title.includes('округ')) {
+//     filtersStore.clearDistrict()
+//     schoolsStore.fetchSchools()
+//   }
+//
+// }
 
 const displayTitle = computed(() => {
   if (props.title.includes('регион') && filtersStore.selectedRegion) {

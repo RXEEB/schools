@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { regionsApi } from '@/api/regionsApi'
 import { districtsApi } from '@/api/districtsApi'
 
@@ -10,6 +10,14 @@ export const useFiltersStore = defineStore('filters', () => {
   const loadingDistricts = ref(false)
   const selectedDistrict = ref(null)
   const selectedRegion = ref(null)
+
+  const getCurrentDistrictId = () => selectedDistrict.value?.id || null
+  const getCurrentRegionId = () => selectedRegion.value?.id || null
+
+  const clearAllFilters = () => {
+    selectedDistrict.value = null
+    selectedRegion.value = null
+  }
 
   const fetchRegions = async () => {
     loadingRegions.value = true
@@ -56,6 +64,9 @@ export const useFiltersStore = defineStore('filters', () => {
     loadingDistricts,
     selectedDistrict,
     selectedRegion,
+    getCurrentDistrictId,
+    getCurrentRegionId,
+    clearAllFilters,
     selectDistrict,
     selectRegion,
     clearDistrict,

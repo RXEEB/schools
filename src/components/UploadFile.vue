@@ -59,13 +59,12 @@ const exportToCSV = () => {
 }
 
 .button {
-  width: 147px;
+  width: 160px;
   height: 56px;
   opacity: 1;
-  padding: 9px 11px;
   border-radius: 10px;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 130%;
   letter-spacing: 0px;
   text-align: center;
@@ -76,7 +75,7 @@ const exportToCSV = () => {
 
 .img-btn {
   position: absolute;
-  left: 0.75rem;
+  left: 0.5rem;
   top: 0.75rem;
 }
 .button:hover {

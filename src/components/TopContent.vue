@@ -1,6 +1,6 @@
 <script setup>
-import AppButton from './ui/AppButton.vue'
 import Search from './Search.vue'
+import UploadFile from './UploadFile.vue'
 
 defineProps({
   title: String,
@@ -14,7 +14,7 @@ defineProps({
     </div>
     <div class="right-block">
       <Search />
-      <AppButton />
+      <UploadFile />
     </div>
   </div>
 </template>

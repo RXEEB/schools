@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useSchoolsStore } from '@/stores/schools'
 import { useFiltersStore } from '@/stores/filters'
+import Pagination from '../Pagination.vue'
 
 import TopContent from '../TopContent.vue'
 import Filter from '../Filter.vue'
@@ -10,6 +11,10 @@ import Table from '../Table.vue'
 
 const schoolsStore = useSchoolsStore()
 const filtersStore = useFiltersStore()
+
+const handlePageChange = page => {
+  schoolsStore.changePage(page)
+}
 
 onMounted(() => {
   schoolsStore.fetchSchools()
@@ -35,6 +40,15 @@ onMounted(() => {
       />
     </div>
     <Table />
+    <div class="pagination">
+      <Pagination
+        :current-page="schoolsStore.currentPage"
+        :total-items="schoolsStore.totalItems"
+        :items-per-page="schoolsStore.itemsPerPage"
+        :on-page-change="handlePageChange"
+        v-if="schoolsStore.totalItems > schoolsStore.itemsPerPage"
+      />
+    </div>
   </div>
 </template>
 <style scoped>

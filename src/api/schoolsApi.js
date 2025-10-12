@@ -1,10 +1,10 @@
 import apiClient from './axios'
 
 export const schoolsApi = {
-  async getSchools(federal_district_id = null, region_id = null, search = null) {
+  async getSchools(federal_district_id = null, region_id = null, search = null, page = 1) {
     const params = {
       count: 8,
-      page: 1,
+      page: page,
     }
 
     if (federal_district_id) {

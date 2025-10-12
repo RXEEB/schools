@@ -1,18 +1,24 @@
 <script setup>
 import SchoolsList from './SchoolsList.vue'
 import { useSchoolsStore } from '@/stores/schools'
+import { useSelectedSchoolsStore } from '@/stores/selectedSchools'
 
 const schoolsStore = useSchoolsStore()
 
-const handlePageChange = page => {
-  console.log('Переход на страницу:', page)
+const selectedSchoolsStore = useSelectedSchoolsStore()
+
+const handleClearSchools = () => {
+  selectedSchoolsStore.clearSelectedSchools()
 }
 </script>
 <template>
   <div class="container">
     <div class="head">
       <div class="title">
-        <h4>Регион</h4>
+        <div class="btn-minus" @click="clearSelectedSchools">
+          <img @click="handleClearSchools" class="img-btn" src="/img/minus.svg" alt="icon" />
+          <h4>Регион</h4>
+        </div>
       </div>
       <div class="title">
         <h4>Название</h4>
@@ -24,9 +30,10 @@ const handlePageChange = page => {
         <h4>Уровень образования</h4>
       </div>
     </div>
-    <div class="table">
-      <SchoolsList :schools="schoolsStore.schools" />
-      <div class="pagination"></div>
+    <div class="table-wrapper">
+      <div class="table">
+        <SchoolsList :schools="schoolsStore.schools" />
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +50,7 @@ const handlePageChange = page => {
   height: 56px;
   background-color: rgba(240, 240, 247, 1);
   opacity: 1;
+  min-width: min-content;
 }
 
 .title {
@@ -58,7 +66,18 @@ const handlePageChange = page => {
   text-overflow: ellipsis;
   text-align: left;
 }
+.btn-minus {
+  display: flex;
+  cursor: pointer;
+  gap: 1rem;
+  cursor: pointer;
+}
 .pagination {
   margin-top: 20px;
+}
+.table {
+  min-width: min-content;
+  height: 500px;
+  overflow-x: auto;
 }
 </style>
