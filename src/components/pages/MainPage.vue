@@ -32,6 +32,7 @@ onMounted(() => {
         title="Сортировка по регионам"
         :regions="filtersStore.regions"
         :loading="filtersStore.loadingRegions"
+        :search="true"
       />
       <Filter
         title="Сортировка по федеральным округам"

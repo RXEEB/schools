@@ -11,7 +11,7 @@ import MainPage from './components/pages/MainPage.vue'
 <style scoped>
 .main {
   width: 1632px;
-  height: 836px;
+  height: 886px;
   background: #ffff;
   padding: 0 24px;
   border-radius: 16px;

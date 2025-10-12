@@ -6,6 +6,10 @@ import { useSchoolsStore } from '@/stores/schools'
 const filtersStore = useFiltersStore()
 const schoolsStore = useSchoolsStore()
 
+const isPopupVisible = ref(false)
+const sortRef = ref(null)
+const searchQuery = ref('')
+
 const props = defineProps({
   title: String,
   regions: {
@@ -20,6 +24,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  search: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const items = computed(() => {
@@ -31,16 +39,13 @@ const items = computed(() => {
   return []
 })
 
-const isPopupVisible = ref(false)
-const sortRef = ref(null)
-
 const togglePopup = () => {
   isPopupVisible.value = !isPopupVisible.value
 }
 
-const closePopup = () => {
-  isPopupVisible.value = false
-}
+// const closePopup = () => {
+//   isPopupVisible.value = false
+// }
 
 const handleItemClick = item => {
   if (props.title.includes('округ')) {
@@ -54,7 +59,14 @@ const handleItemClick = item => {
     filtersStore.selectDistrict(null)
   }
   isPopupVisible.value = false
+  searchQuery.value = ''
 }
+
+const filteredItems = computed(() => {
+  return items.value.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
+  )
+})
 
 // const handleReset = () => {
 //   if (props.title.includes('округ')) {
@@ -94,13 +106,28 @@ onUnmounted(() => {
     <img :src="!isPopupVisible ? '/img/arrow-down.svg' : '/img/arrow-up.svg'" />
 
     <div v-if="isPopupVisible" class="popup">
+      <input
+        v-if="search"
+        v-model="searchQuery"
+        type="text"
+        placeholder="Поиск..."
+        class="search-input"
+        @click.stop=""
+      />
+
       <div class="popup-content">
+        <div class="popup-items">
+          <div
+            v-for="item in filteredItems"
+            :key="item.id"
+            class="popup-item"
+            @click="handleItemClick(item)"
+          >
+            {{ item.name }}
+          </div>
+        </div>
         <div class="status-message">
           {{ loading ? 'Загрузка...' : items.length === 0 ? 'Нет данных' : '' }}
-        </div>
-
-        <div v-for="item in items" :key="item.id" class="popup-item" @click="handleItemClick(item)">
-          {{ item.name }}
         </div>
       </div>
     </div>
@@ -124,7 +151,7 @@ onUnmounted(() => {
 
 .popup {
   position: absolute;
-  max-height: 482px;
+
   top: 100%;
   left: 0;
   right: 0;
@@ -134,11 +161,16 @@ onUnmounted(() => {
   margin-top: 5px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  overflow-y: auto;
 }
-
 .popup-content {
   padding: 15px;
+}
+
+.popup-items {
+  min-width: min-content;
+  overflow-y: auto;
+  padding: 15px;
+  max-height: 482px;
 }
 
 .popup-item {
@@ -164,5 +196,21 @@ onUnmounted(() => {
   padding: 10px;
   text-align: center;
   color: #666;
+}
+.search-input {
+  border: 1px solid rgba(211, 211, 222, 1);
+  width: 470px;
+  height: 36px;
+  margin: 10px 0 0 10px;
+  padding: 5px;
+  border-radius: 10px;
+  font-family: Inter;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0px;
+  vertical-align: middle;
+  outline: none;
 }
 </style>
