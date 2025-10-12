@@ -77,7 +77,7 @@ const handleClearSchools = () => {
 }
 .table {
   min-width: min-content;
-  height: 550px;
+  height: 530px;
   overflow-x: auto;
 }
 </style>
