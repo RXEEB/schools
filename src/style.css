@@ -1,0 +1,14 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Inter;
+  padding: 30px 60px 30px 60px;
+  background-color: #f1f4fd;
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    padding: 0px;
+  }
+}

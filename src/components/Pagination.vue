@@ -19,11 +19,11 @@ const props = defineProps({
     type: Function,
     required: true,
   },
-})
+});
 
-const handlePageChange = page => {
-  props.onPageChange(page)
-}
+const handlePageChange = (page) => {
+  props.onPageChange(page);
+};
 </script>
 
 <template>
@@ -67,5 +67,22 @@ const handlePageChange = page => {
 
 .btn-active {
   background-color: rgba(240, 240, 247, 1);
+}
+
+@media screen and (max-width: 600px) {
+  .btn {
+    height: 16px;
+
+    width: 24px;
+
+    border: none;
+
+    margin-inline: 5px;
+
+    cursor: pointer;
+
+    border-radius: 8px;
+    background-color: white;
+  }
 }
 </style>

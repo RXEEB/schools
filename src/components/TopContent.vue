@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-top">
     <div class="left-block">
       <h4>{{ title }}</h4>
     </div>
@@ -20,9 +20,10 @@ defineProps({
 </template>
 
 <style scoped>
-.container {
+.container-top {
   display: flex;
   justify-content: space-between;
+  width: auto;
 }
 .left-block {
   font-weight: 700;
@@ -60,5 +61,19 @@ defineProps({
   position: absolute;
   right: 20px;
   top: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .container-top {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+  }
+  .right-block {
+    flex-direction: column;
+  }
+  .left-block {
+    display: none;
+  }
 }
 </style>

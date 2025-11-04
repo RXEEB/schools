@@ -1,51 +1,64 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import { schoolsApi } from '@/api/schoolsApi'
-import { useFiltersStore } from '@/stores/filters'
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import { schoolsApi } from "../api/schoolsApi";
+import { useFiltersStore } from "../stores/filters";
 
-export const useSchoolsStore = defineStore('schools', () => {
-  const schools = ref([])
-  const loading = ref(false)
-  const currentPage = ref(1)
-  const totalItems = ref(0)
-  const itemsPerPage = ref(8)
+export const useSchoolsStore = defineStore("schools", () => {
+  const schools = ref([]);
+  const loading = ref(false);
+  const currentPage = ref(1);
+  const totalItems = ref(0);
+  const itemsPerPage = ref(8);
 
   const fetchSchools = async (
     federal_district_id = null,
     region_id = null,
     search = null,
-    page = 1,
+    page = 1
   ) => {
-    loading.value = true
+    loading.value = true;
     try {
-      const response = await schoolsApi.getSchools(federal_district_id, region_id, search, page)
+      const response = await schoolsApi.getSchools(
+        federal_district_id,
+        region_id,
+        search,
+        page
+      );
 
-      schools.value = response.data?.list || response.list || []
+      schools.value = response.data?.list || response.list || [];
 
       totalItems.value =
-        response.data?.total_count || response.data?.pages_count || response.total_count || 0
-      currentPage.value = page
+        response.data?.total_count ||
+        response.data?.pages_count ||
+        response.total_count ||
+        0;
+      currentPage.value = page;
     } catch (error) {
-      console.error('Error fetching schools:', error)
+      console.error("Error fetching schools:", error);
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  }
+  };
 
-  const changePage = page => {
-    const filtersStore = useFiltersStore()
+  const changePage = (page) => {
+    const filtersStore = useFiltersStore();
 
-    currentPage.value = page
+    currentPage.value = page;
 
-    fetchSchools(filtersStore.getCurrentDistrictId(), filtersStore.getCurrentRegionId(), null, page)
-  }
+    fetchSchools(
+      filtersStore.getCurrentDistrictId(),
+      filtersStore.getCurrentRegionId(),
+      null,
+      page
+    );
+  };
 
-  const toggleSchool = schoolId => {
-    const school = schools.value.find(s => s.uuid === schoolId)
+  const toggleSchool = (schoolId) => {
+    const school = schools.value.find((s) => s.uuid === schoolId);
     if (school) {
-      school.isAdded = !school.isAdded
+      school.isAdded = !school.isAdded;
     }
-  }
+  };
 
   return {
     schools,
@@ -56,5 +69,5 @@ export const useSchoolsStore = defineStore('schools', () => {
     fetchSchools,
     changePage,
     toggleSchool,
-  }
-})
+  };
+});

@@ -1,19 +1,9 @@
 <script setup>
-import MainPage from './components/pages/MainPage.vue'
+import MainPage from "./pages/MainPage.vue";
 </script>
 
 <template>
-  <main class="main">
-    <MainPage />
-  </main>
+  <MainPage />
 </template>
 
-<style scoped>
-.main {
-  width: 1632px;
-  height: 886px;
-  background: #ffff;
-  padding: 0 24px;
-  border-radius: 16px;
-}
-</style>
+<style scoped></style>

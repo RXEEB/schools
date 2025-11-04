@@ -1,13 +1,13 @@
 <script setup>
 import { onMounted } from 'vue'
-import { useSchoolsStore } from '@/stores/schools'
-import { useFiltersStore } from '@/stores/filters'
-import Pagination from '../Pagination.vue'
+import { useSchoolsStore } from '../stores/schools'
+import { useFiltersStore } from '../stores/filters'
+import Pagination from '../components/Pagination.vue'
 
-import TopContent from '../TopContent.vue'
-import Filter from '../Filter.vue'
-import Calendar from '../Calendar.vue'
-import Table from '../Table.vue'
+import TopContent from '../components/TopContent.vue'
+import Filter from '../components/Filter.vue'
+import Calendar from '../components/Calendar.vue'
+import Table from '../components/TableComponent/Table.vue'
 
 const schoolsStore = useSchoolsStore()
 const filtersStore = useFiltersStore()
@@ -27,7 +27,7 @@ onMounted(() => {
   <div class="container">
     <TopContent title="Таблица учреждений" />
     <div class="filters">
-      <Calendar title="09 января 2024 - 15 января 2024" />
+      <Calendar />
       <Filter
         title="Сортировка по регионам"
         :regions="filtersStore.regions"
@@ -53,10 +53,42 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
+.container {
+  align-items: center;
+  width: 1632px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
 .filters {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 auto;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 0px;
+    width: auto;
+  }
+  .filters {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+  .container {
+    width: auto;
+  }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    width: auto;
+  }
+}
+@media (min-width: 1025px) and (max-width: 1370px) {
+  .container {
+    width: auto;
+  }
 }
 </style>

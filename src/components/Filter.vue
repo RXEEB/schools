@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useFiltersStore } from '@/stores/filters'
-import { useSchoolsStore } from '@/stores/schools'
+import { useFiltersStore } from '../stores/filters'
+import { useSchoolsStore } from '../stores/schools'
 
 const filtersStore = useFiltersStore()
 const schoolsStore = useSchoolsStore()
@@ -43,10 +43,6 @@ const togglePopup = () => {
   isPopupVisible.value = !isPopupVisible.value
 }
 
-// const closePopup = () => {
-//   isPopupVisible.value = false
-// }
-
 const handleItemClick = item => {
   if (props.title.includes('округ')) {
     filtersStore.selectDistrict(item)
@@ -67,14 +63,6 @@ const filteredItems = computed(() => {
     item.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
   )
 })
-
-// const handleReset = () => {
-//   if (props.title.includes('округ')) {
-//     filtersStore.clearDistrict()
-//     schoolsStore.fetchSchools()
-//   }
-//
-// }
 
 const displayTitle = computed(() => {
   if (props.title.includes('регион') && filtersStore.selectedRegion) {
@@ -104,6 +92,8 @@ onUnmounted(() => {
   <div class="sort" @click="togglePopup" ref="sortRef">
     <span>{{ displayTitle }}</span>
     <img :src="!isPopupVisible ? '/img/arrow-down.svg' : '/img/arrow-up.svg'" />
+
+    <div v-if="isPopupVisible" class="popup-overlay"></div>
 
     <div v-if="isPopupVisible" class="popup">
       <input
@@ -139,7 +129,6 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 517px;
   height: 56px;
   padding: 0 20px;
   border-radius: 10px;
@@ -212,5 +201,24 @@ onUnmounted(() => {
   letter-spacing: 0px;
   vertical-align: middle;
   outline: none;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 600px) {
+  .sort {
+    align-items: center;
+    margin: 3px;
+  }
+  .search-input {
+    width: 300px;
+  }
 }
 </style>

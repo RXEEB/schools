@@ -1,23 +1,23 @@
 <script setup>
-import { ref } from 'vue'
-import { useSchoolsStore } from '@/stores/schools'
+import { ref } from "vue";
+import { useSchoolsStore } from "../stores/schools";
 
-const schoolsStore = useSchoolsStore()
-const searchQuery = ref('')
+const schoolsStore = useSchoolsStore();
+const searchQuery = ref("");
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
-    schoolsStore.fetchSchools(null, null, searchQuery.value.trim())
-    searchQuery.value = ''
+    schoolsStore.fetchSchools(null, null, searchQuery.value.trim());
+    searchQuery.value = "";
   } else {
-    schoolsStore.fetchSchools()
+    schoolsStore.fetchSchools();
   }
-}
+};
 
 const handleClear = () => {
-  searchQuery.value = ''
-  schoolsStore.fetchSchools()
-}
+  searchQuery.value = "";
+  schoolsStore.fetchSchools();
+};
 </script>
 
 <template>
@@ -29,7 +29,12 @@ const handleClear = () => {
       @keyup.enter="handleSearch"
       class="search"
     />
-    <img class="img-search" src="/img/search.svg" alt="icon" @click="handleSearch" />
+    <img
+      class="img-search"
+      src="/img/search.svg"
+      alt="icon"
+      @click="handleSearch"
+    />
   </div>
 </template>
 <style scoped>
